@@ -1,0 +1,27 @@
+{
+  "name": "coming-pod",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:TinyKitten/ComingPod.git",
+  "author": "TinyKitten <catwalk8205@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node dist/pod.js",
+    "build": "babel src --out-dir dist"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.6",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.1.6",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
+  },
+  "dependencies": {
+    "dotenv": "^6.1.0",
+    "play-sound": "^1.1.2",
+    "say": "^0.15.0",
+    "ws": "^6.1.0"
+  }
+}
