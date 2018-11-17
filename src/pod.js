@@ -1,7 +1,8 @@
-import WebSocket from 'ws';
 import dotenv from 'dotenv';
 import say from 'say';
 import PlaySound from 'play-sound';
+
+import WebSocketClient from './websocket';
 
 const player = PlaySound({});
 
@@ -24,18 +25,20 @@ const onApproaching = (code) => {
 
 const url = `${process.env.API_ENDPOINT}?token=${process.env.POD_TOKEN}`;
 
-const ws = new WebSocket(url, {
+const wsc = new WebSocketClient();
+
+wsc.open(url, {
   origin: 'http://localhost',
 });
 
-ws.on('open', () => {
+wsc.onopen = () => {
   console.log('Coming API connected.');
-});
+};
 
-ws.on('message', (data) => {
+wsc.onmessage = (data) => {
   const json = JSON.parse(data);
   switch (json.type) {
     case 'APPROACHING': onApproaching(json.code); break;
     default: break;
   }
-});
+};
