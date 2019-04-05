@@ -8,6 +8,14 @@ const player = PlaySound({});
 
 dotenv.config();
 
+console.log('Launched');
+
+say.speak('Pod lauched!!', 'Alex', 1.0, (speakErr) => {
+  if (speakErr) {
+    console.error(speakErr);
+  }
+});
+
 const onApproaching = (code) => {
   const text = `${code} is now approaching to this pod.`;
   console.log(text);
