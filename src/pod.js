@@ -1,3 +1,4 @@
+import '@babel/polyfill';
 import dotenv from 'dotenv';
 import say from 'say';
 import PlaySound from 'play-sound';
@@ -10,13 +11,18 @@ dotenv.config();
 
 console.log('Launched');
 
-const onApproaching = (code) => {
+const sleep = msec => new Promise((resolve) => {
+  setTimeout(() => resolve(), msec);
+});
+
+const onApproaching = async (code) => {
   const text = `${code} is now approaching to this pod.`;
   console.log(text);
   say.speak(text, 'Alex', 1.0, (speakErr) => {
     if (speakErr) {
       console.error(speakErr);
     }
+    sleep(1000);
     player.play('./assets/ring.mp3', (ringErr) => {
       if (ringErr) {
         console.error(ringErr);

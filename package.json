@@ -19,6 +19,7 @@
     "eslint-plugin-import": "^2.14.0"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.4.3",
     "dotenv": "^6.1.0",
     "play-sound": "^1.1.2",
     "say": "^0.15.0",
