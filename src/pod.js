@@ -22,7 +22,23 @@ const onApproaching = (code) => {
       console.error(speakErr);
     }
     await sleep(process.env.APPROACHING_BEFORE_SLEEP_MSEC);
-    player.play('./assets/ring.mp3', (ringErr) => {
+    player.play('./assets/enter.mp3', (ringErr) => {
+      if (ringErr) {
+        console.error(ringErr);
+      }
+    });
+  });
+};
+
+const onLeaved = (code) => {
+  const text = `${code} is leaved from this pod.`;
+  console.log(text);
+  say.speak(text, 'Alex', 1.0, async (speakErr) => {
+    if (speakErr) {
+      console.error(speakErr);
+    }
+    await sleep(process.env.APPROACHING_BEFORE_SLEEP_MSEC);
+    player.play('./assets/leave.mp3', (ringErr) => {
       if (ringErr) {
         console.error(ringErr);
       }
@@ -52,6 +68,7 @@ wsc.onmessage = (data) => {
   const json = JSON.parse(data);
   switch (json.type) {
     case 'APPROACHING': onApproaching(json.code); break;
+    case 'LEAVED': onLeaved(json.code); break;
     default: break;
   }
 };
