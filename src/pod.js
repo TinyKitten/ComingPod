@@ -2,7 +2,6 @@ import '@babel/polyfill';
 import dotenv from 'dotenv';
 import say from 'say';
 import PlaySound from 'play-sound';
-
 import WebSocketClient from './websocket';
 
 const player = PlaySound({});
@@ -22,7 +21,7 @@ const onApproaching = (code) => {
     if (speakErr) {
       console.error(speakErr);
     }
-    await sleep(1000);
+    await sleep(process.env.APPROACHING_BEFORE_SLEEP_MSEC);
     player.play('./assets/ring.mp3', (ringErr) => {
       if (ringErr) {
         console.error(ringErr);
