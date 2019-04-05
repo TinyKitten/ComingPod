@@ -15,14 +15,14 @@ const sleep = msec => new Promise((resolve) => {
   setTimeout(() => resolve(), msec);
 });
 
-const onApproaching = async (code) => {
+const onApproaching = (code) => {
   const text = `${code} is now approaching to this pod.`;
   console.log(text);
-  say.speak(text, 'Alex', 1.0, (speakErr) => {
+  say.speak(text, 'Alex', 1.0, async (speakErr) => {
     if (speakErr) {
       console.error(speakErr);
     }
-    sleep(1000);
+    await sleep(1000);
     player.play('./assets/ring.mp3', (ringErr) => {
       if (ringErr) {
         console.error(ringErr);
