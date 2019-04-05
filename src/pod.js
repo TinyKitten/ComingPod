@@ -17,7 +17,7 @@ const sleep = msec => new Promise((resolve) => {
 const onApproaching = (code) => {
   const text = `${code} is now approaching to this pod.`;
   console.log(text);
-  say.speak(text, 'Alex', 1.0, async (speakErr) => {
+  say.speak(text, null, 1.0, async (speakErr) => {
     if (speakErr) {
       console.error(speakErr);
     }
@@ -33,7 +33,7 @@ const onApproaching = (code) => {
 const onLeaved = (code) => {
   const text = `${code} is leaved from this pod.`;
   console.log(text);
-  say.speak(text, 'Alex', 1.0, async (speakErr) => {
+  say.speak(text, null, 1.0, async (speakErr) => {
     if (speakErr) {
       console.error(speakErr);
     }
@@ -57,7 +57,7 @@ wsc.open(url, {
 wsc.onopen = () => {
   console.log('Coming API connected.');
   const text = 'This pod is connected to server!';
-  say.speak(text, 'Alex', 1.0, (speakErr) => {
+  say.speak(text, null, 1.0, (speakErr) => {
     if (speakErr) {
       console.error(speakErr);
     }
