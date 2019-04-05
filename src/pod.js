@@ -33,6 +33,12 @@ wsc.open(url, {
 
 wsc.onopen = () => {
   console.log('Coming API connected.');
+  const text = 'This pod is connected to server!';
+  say.speak(text, 'Alex', 1.0, (speakErr) => {
+    if (speakErr) {
+      console.error(speakErr);
+    }
+  });
 };
 
 wsc.onmessage = (data) => {
