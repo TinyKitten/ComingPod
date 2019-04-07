@@ -1,49 +1,52 @@
 import '@babel/polyfill';
+import OpenJTalk from 'openjtalk';
 import dotenv from 'dotenv';
-import say from 'say';
 import PlaySound from 'play-sound';
 import WebSocketClient from './websocket';
 
 const player = PlaySound({});
+const mei = new OpenJTalk();
 
 dotenv.config();
 
 console.log('Launched');
 
+const talkAsync = sentence => new Promise((resolve, reject) => {
+  mei.talk(sentence, (err) => {
+    if (err) {
+      return reject(err);
+    }
+    return resolve();
+  });
+});
+
+const playAsync = path => new Promise((resolve, reject) => {
+  player.play(path, (err) => {
+    if (err) {
+      return reject(err);
+    }
+    return resolve();
+  });
+});
+
 const sleep = msec => new Promise((resolve) => {
   setTimeout(() => resolve(), msec);
 });
 
-const onApproaching = (code) => {
-  const text = `${code} is now approaching to this pod.`;
+const onApproaching = async (code) => {
+  const text = `${code}はこのポッドに接近中です。`;
   console.log(text);
-  say.speak(text, null, 1.0, async (speakErr) => {
-    if (speakErr) {
-      console.error(speakErr);
-    }
-    await sleep(process.env.APPROACHING_BEFORE_SLEEP_MSEC);
-    player.play('./assets/enter.mp3', (ringErr) => {
-      if (ringErr) {
-        console.error(ringErr);
-      }
-    });
-  });
+  await talkAsync(text).catch(console.error);
+  await sleep(process.env.APPROACHING_BEFORE_SLEEP_MSEC);
+  await playAsync('./assets/enter.mp3').catch(console.error);
 };
 
-const onLeaved = (code) => {
-  const text = `${code} is leaved from this pod.`;
+const onLeaved = async (code) => {
+  const text = `${code}はこのポッドから離れました。`;
   console.log(text);
-  say.speak(text, null, 1.0, async (speakErr) => {
-    if (speakErr) {
-      console.error(speakErr);
-    }
-    await sleep(process.env.APPROACHING_BEFORE_SLEEP_MSEC);
-    player.play('./assets/leave.mp3', (ringErr) => {
-      if (ringErr) {
-        console.error(ringErr);
-      }
-    });
-  });
+  await talkAsync(text).catch(console.error);
+  await sleep(process.env.APPROACHING_BEFORE_SLEEP_MSEC);
+  await playAsync('./assets/leave.mp3').catch(console.error);
 };
 
 const url = `${process.env.API_ENDPOINT}?token=${process.env.POD_TOKEN}`;
@@ -54,14 +57,9 @@ wsc.open(url, {
   origin: 'http://localhost',
 });
 
-wsc.onopen = () => {
+wsc.onopen = async () => {
   console.log('Coming API connected.');
-  const text = 'This pod is connected to server!';
-  say.speak(text, null, 1.0, (speakErr) => {
-    if (speakErr) {
-      console.error(speakErr);
-    }
-  });
+  await playAsync('./assets/connected.mp3').catch(console.error);
 };
 
 wsc.onmessage = (data) => {
